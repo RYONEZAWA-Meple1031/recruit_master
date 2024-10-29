@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>応募者詳細</title>
+    <style>
+        /* 全体のベーススタイル */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        /* コンテンツ全体を囲むコンテナ */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* タイトルのスタイル */
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* テーブルスタイル */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+            word-break: keep-all;
+        }
+
+        /* 列幅の制御 (例: 最大100pxまで) */
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            max-width: 120px; /* 列の最大幅を設定 */
+            white-space: nowrap; /* テキストを折り返さない */
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        /* ボタン風のリンク */
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .button-link:hover {
+            background-color: #0056b3;
+        }
+
+        /* フレックスコンテナでボタンを横並びに */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        /* メモ欄の枠を作成 */
+        .memo-section {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .memo-section h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* スマホ対応: ボタンを縦並びに */
+        @media (max-width: 600px) {
+            .button-container {
+                flex-direction: column;
+            }
+            
+            .button-link {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ applicant.name }} の詳細</h1>
+
+        <table>
+            <tr>
+                <th>応募日</th>
+                <td>{{ applicant.application_date|date:"Y/m/d" }}</td>
+            </tr>
+            <tr>
+                <th>応募経路</th>
+                <td>{{ applicant.application_route }}</td>
+            </tr>
+            <tr>
+                <th>カジュアル面談日</th>
+                <td>{{ applicant.casual_meeting_date|date:"Y/m/d" }}</td>
+            </tr>
+            <tr>
+                <th>書類選考</th>
+                <td>{{ applicant.document_selection_pass_date|date:"Y/m/d" }}</td>
+            </tr>
+            <tr>
+                <th>1次面接</th>
+                <td>{{ applicant.first_interview_date|date:"Y/m/d" }}</td>
+            </tr>
+            <tr>
+                <th>2次面接</th>
+                <td>{{ applicant.second_interview_date|date:"Y/m/d" }}</td>
+            </tr>
+            <tr>
+                <th>内定通知</th>
+                <td>{{ applicant.offer_date|date:"Y/m/d" }}</td>
+            </tr>
+            <tr>
+                <th>内定承諾</th>
+                <td>{{ applicant.offer_acceptance_date|date:"Y/m/d" }}</td>
+            </tr>
+            <tr>
+                <th>募集職種</th>
+                <td>{{ applicant.job_position }}</td>
+            </tr>
+            <tr>
+                <th>年齢</th>
+                <td>{{ applicant.age }}</td>
+            </tr>
+            <tr>
+                <th>地域</th>
+                <td>{{ applicant.region }}</td>
+            </tr>
+            <tr>
+                <th>スキル</th>
+                <td>{{ applicant.skills }}</td>
+            </tr>
+            <tr>
+                <th>入社時期</th>
+                <td>{{ applicant.desired_joining_date|date:"Y/m/d" }}</td>
+            </tr>
+            <tr>
+                <th>現年収</th>
+                <td>{{ applicant.current_salary }}</td>
+            </tr>
+            <tr>
+                <th>希望年収</th>
+                <td>{{ applicant.desired_salary }}</td>
+            </tr>
+            <tr>
+                <th>提示金額</th>
+                <td>{{ applicant.offered_salary }}</td>
+            </tr>
+        </table>
+
+        <!-- メモ欄をまとめたセクション -->
+        <div class="memo-section">
+            <h3>メモ一覧</h3>
+            <p><strong>1次面接メモ:</strong> {{ applicant.first_interview_note }}</p>
+            <p><strong>2次面接メモ:</strong> {{ applicant.second_interview_note }}</p>
+            <p><strong>内定通知メモ:</strong> {{ applicant.offer_note }}</p>
+            <p><strong>内定承諾メモ:</strong> {{ applicant.offer_acceptance_note }}</p>
+            <p><strong>メモ:</strong> {{ applicant.memo }}</p>
+        </div>
+
+        <!-- ボタンを並べるコンテナ -->
+        <div class="button-container">
+            <a href="{% url 'applicant_list' %}" class="button-link">応募者リストに戻る</a>
+            <a href="{% url 'applicant_edit' applicant.pk %}" class="button-link">編集</a>
+            <a href="{% url 'applicant_delete' applicant.pk %}" class="button-link" onclick="return confirm('本当に削除しますか？');">削除</a>
+        </div>
+    </div>
+</body>
+</html>

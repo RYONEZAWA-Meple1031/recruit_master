@@ -1,0 +1,68 @@
+from django import forms
+from .models import Applicant
+
+class ApplicantForm(forms.ModelForm):
+    class Meta:
+        model = Applicant
+        fields = [
+            'application_date',
+            'name',
+            'application_route',
+            'selection_phase', 
+            'selection_status',
+            'casual_meeting_date',
+            'document_selection_pass_date',
+            'first_interview_date',
+            'first_interview_note',
+            'second_interview_date',
+            'second_interview_note',
+            'offer_date',
+            'offer_note',
+            'offer_acceptance_date',
+            'offer_acceptance_note',
+            'job_position',
+            'age',
+            'region',
+            'skills',
+            'desired_joining_date',
+            'current_salary',
+            'desired_salary',
+            'offered_salary',
+            'memo',
+        ]
+        widgets = {
+            'application_date': forms.DateInput(attrs={'type': 'date'}),
+            'casual_meeting_date': forms.DateInput(attrs={'type': 'date'}),
+            'document_selection_pass_date': forms.DateInput(attrs={'type': 'date'}),
+            'first_interview_date': forms.DateInput(attrs={'type': 'date'}),
+            'second_interview_date': forms.DateInput(attrs={'type': 'date'}),
+            'offer_date': forms.DateInput(attrs={'type': 'date'}),
+            'offer_acceptance_date': forms.DateInput(attrs={'type': 'date'}),
+            'desired_joining_date': forms.DateInput(attrs={'type': 'date'}),
+        }
+        labels = {
+            'application_date': '応募日',
+            'name': '氏名',
+            'application_route': '応募経路',
+            'selection_phase': '選考フェーズ',
+            'selection_status': '選考ステータス',
+            'casual_meeting_date': 'カジュアル面談実施日',
+            'document_selection_pass_date': '書類選考通過日',
+            'first_interview_date': '1次面接実施日',
+            'first_interview_note': '1次面接メモ',
+            'second_interview_date': '2次面接実施日',
+            'second_interview_note': '2次面接メモ',
+            'offer_date': '内定通知日',
+            'offer_note': '内定通知メモ',
+            'offer_acceptance_date': '内定承諾日',
+            'offer_acceptance_note': '内定承諾メモ',
+            'job_position': '募集職種',
+            'age': '年齢',
+            'region': '地域',
+            'skills': 'スキル',
+            'desired_joining_date': '入社希望時期',
+            'current_salary': '現年収',
+            'desired_salary': '希望年収',
+            'offered_salary': '提示金額',
+            'memo': 'メモ',
+        }

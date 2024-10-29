@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>応募者フォーム</title>
+    <style>
+        /* ベーススタイル */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* フォームコンテナ */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* タイトル */
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* テーブルスタイル */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            text-align: left;
+            background-color: #f2f2f2;
+            font-weight: bold;
+            width: 25%; /* th の幅を調整 */
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        /* フォームの入力フィールドスタイル */
+        input[type="text"], input[type="date"], textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        /* ボタンスタイル */
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* キャンセルリンクのスタイル */
+        a {
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+            color: #555;
+            text-decoration: none;
+            padding: 10px;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        a:hover {
+            background-color: #e2e2e2;
+        }
+
+        /* レスポンシブ対応 */
+        @media (max-width: 600px) {
+            th, td {
+                padding: 10px;
+            }
+            button, a {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>応募者情報を{{ form.instance.pk|yesno:"編集,作成" }}</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <th>応募日</th>
+                    <td>{{ form.application_date }}</td>
+                </tr>
+                <tr>
+                    <th>氏名</th>
+                    <td>{{ form.name }}</td>
+                </tr>
+                <tr>
+                    <th>応募経路</th>
+                    <td>{{ form.application_route }}</td>
+                </tr>
+                <tr>
+                    <th>選考フェーズ</th>
+                    <td>{{ form.selection_phase }}</td>
+                </tr>
+                <tr>
+                    <th>選考ステータス</th>
+                    <td>{{ form.selection_status }}</td>
+                </tr>
+                <tr>
+                    <th>カジュアル面談実施日</th>
+                    <td>{{ form.casual_meeting_date }}</td>
+                </tr>
+                <tr>
+                    <th>書類選考通過日</th>
+                    <td>{{ form.document_selection_pass_date }}</td>
+                </tr>
+                <tr>
+                    <th>1次面接実施日</th>
+                    <td>{{ form.first_interview_date }}</td>
+                </tr>
+                <tr>
+                    <th>1次面接メモ</th>
+                    <td>{{ form.first_interview_note }}</td>
+                </tr>
+                <tr>
+                    <th>2次面接実施日</th>
+                    <td>{{ form.second_interview_date }}</td>
+                </tr>
+                <tr>
+                    <th>2次面接メモ</th>
+                    <td>{{ form.second_interview_note }}</td>
+                </tr>
+                <tr>
+                    <th>内定通知日</th>
+                    <td>{{ form.offer_date }}</td>
+                </tr>
+                <tr>
+                    <th>内定通知メモ</th>
+                    <td>{{ form.offer_note }}</td>
+                </tr>
+                <tr>
+                    <th>内定承諾日</th>
+                    <td>{{ form.offer_acceptance_date }}</td>
+                </tr>
+                <tr>
+                    <th>内定承諾メモ</th>
+                    <td>{{ form.offer_acceptance_note }}</td>
+                </tr>
+                <tr>
+                    <th>募集職種</th>
+                    <td>{{ form.job_position }}</td>
+                </tr>
+                <tr>
+                    <th>年齢</th>
+                    <td>{{ form.age }}</td>
+                </tr>
+                <tr>
+                    <th>地域</th>
+                    <td>{{ form.region }}</td>
+                </tr>
+                <tr>
+                    <th>スキル</th>
+                    <td>{{ form.skills }}</td>
+                </tr>
+                <tr>
+                    <th>入社希望時期</th>
+                    <td>{{ form.desired_joining_date }}</td>
+                </tr>
+                <tr>
+                    <th>現年収</th>
+                    <td>{{ form.current_salary }}</td>
+                </tr>
+                <tr>
+                    <th>希望年収</th>
+                    <td>{{ form.desired_salary }}</td>
+                </tr>
+                <tr>
+                    <th>提示金額</th>
+                    <td>{{ form.offered_salary }}</td>
+                </tr>
+                <tr>
+                    <th>メモ</th>
+                    <td>{{ form.memo }}</td>
+                </tr>
+            </table>
+
+            <button type="submit">保存</button>
+        </form>
+
+        <a href="{% url 'applicant_list' %}">キャンセル</a>
+    </div>
+</body>
+</html>

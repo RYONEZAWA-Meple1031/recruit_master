@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>応募者リスト</title>
+    <style>
+        /* ベースのスタイル */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 全体のコンテナ */
+        .container {
+            max-width: 100%;  /* 最大幅を設定 */ 
+            margin: 0 auto;  /* コンテンツを中央に配置 */
+            padding: 20px;
+            overflow-x: auto;  /* 横スクロールを有効にする */
+        }
+
+        /* テーブルのラッパーで横スクロールを有効に */
+        .table-wrapper {
+            overflow-x: auto;  /* 横スクロールを有効にする */
+            width: 100%;  /* コンテナ幅に合わせる */
+        }
+
+        /* 検索フォームをテーブルで括る */
+        .search-table {
+            width: 100%;
+            border: 1px solid #ddd;  /* テーブルの外枠 */
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .search-table th, .search-table td {
+            border: 1px solid #ddd;  /* 各セルの枠 */
+            padding: 10px;
+            text-align: left;
+        }
+
+        /* Flexboxを使用して横並びにする */
+        .stats {
+            display: flex;
+            justify-content: space-between;  /* 要素を均等に配置 */
+            flex-wrap: wrap;  /* 画面幅が狭い場合に折り返し */
+            gap: 20px; /* 要素間にスペースを追加 */
+            margin-bottom: 20px; /* テーブルとの間に余白を作る */
+        }
+
+        .stats p {
+            flex: 1;  /* 全ての項目を均等に */
+            min-width: 150px;  /* 最小幅を設定 */
+            margin: 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        /* テーブルのスタイル */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            white-space: nowrap; /* テキストが折り返されず横スクロールになる */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* ボタン風のリンクスタイル */
+        .button-link {
+            display: inline-block;  /* インライン要素をブロック要素として扱う */
+            padding: 10px 20px;  /* ボタン内のテキスト周りの余白 */
+            background-color: #007bff;  /* ボタンの背景色 */
+            color: white;  /* テキストカラー */
+            text-align: center;  /* テキストを中央揃え */
+            text-decoration: none;  /* 下線をなくす */
+            border-radius: 5px;  /* 角を丸める */
+            border: 1px solid #007bff;  /* ボーダーを設定 */
+            font-size: 16px;  /* フォントサイズ */
+            cursor: pointer;  /* ポインターを表示 */
+            margin-bottom: 20px; /* ボタンの下に20pxの余白を追加 */
+        }
+
+        /* ボタンのホバー時のスタイル */
+        .button-link:hover {
+            background-color: #0056b3;  /* ホバー時に背景色を変更 */
+            border-color: #0056b3;  /* ボーダーの色をホバー時に変更 */
+        }
+
+        /* リセットボタン */
+        .reset-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #6c757d;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .reset-button:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+
+       /* 詳細ボタンと編集ボタンのスタイル */
+       .action-button {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #28a745;  /* ボタンの背景色 */
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: 1px solid #28a745;
+            font-size: 14px;
+        }
+
+        .action-button:hover {
+            background-color: #218838;  /* ホバー時に背景色を変更 */
+            border-color: #218838;
+        }
+
+        .edit-button {
+            background-color: #ffc107;  /* 編集ボタンの色を変更 */
+            border-color: #ffc107;
+        }
+
+        .edit-button:hover {
+            background-color: #e0a800;  /* 編集ボタンのホバー時の色を変更 */
+            border-color: #d39e00;
+        }
+
+        /* メディアクエリ: 768px以下の場合 */
+        @media (max-width: 768px) {
+            .stats {
+                flex-direction: column;  /* 一列に並べる */
+            }
+
+            table, th, td {
+                font-size: 14px;  /* 小さい画面ではフォントサイズを調整 */
+            }
+
+            .button-link, .reset-button {
+                width: 100%;  /* ボタンをフル幅にする */
+                margin-bottom: 10px;
+            }
+        }
+
+        /* メディアクエリ: 480px以下の場合 */
+        @media (max-width: 480px) {
+            th, td {
+                padding: 8px;  /* 小さい画面でのパディング調整 */
+            }
+
+            .stats p {
+                padding: 8px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>応募者リスト</h1>
+
+            <!-- 検索フォームをテーブルで括る -->
+            <form method="GET" action="">
+                <table class="search-table">
+                    <tr>
+                        <th>氏名</th>
+                        <td><input type="text" id="name" name="name" value="{{ request.GET.name }}"></td>
+
+                        <th>応募日</th>
+                        <td><input type="date" id="application_date" name="application_date" value="{{ request.GET.application_date }}"></td>
+                    </tr>
+                    <tr>
+                        <th>応募経路</th>
+                        <td><input type="text" id="application_route" name="application_route" value="{{ request.GET.application_route }}"></td>
+
+                        <th>選考フェーズ</th>
+                        <td>
+                            <select id="selection_phase" name="selection_phase">
+                                <option value="">すべて</option>
+                                <option value="0" {% if request.GET.selection_phase == "0" %}selected{% endif %}>応募</option>
+                                <option value="1" {% if request.GET.selection_phase == "1" %}selected{% endif %}>書類選考</option>
+                                <option value="2" {% if request.GET.selection_phase == "2" %}selected{% endif %}>1次面接</option>
+                                <option value="3" {% if request.GET.selection_phase == "3" %}selected{% endif %}>2次面接</option>
+                                <option value="4" {% if request.GET.selection_phase == "4" %}selected{% endif %}>内定</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>選考ステータス</th>
+                        <td>
+                            <select id="selection_status" name="selection_status">
+                                <option value="">すべて</option>
+                                <option value="0" {% if request.GET.selection_status == "0" %}selected{% endif %}>未処理</option>
+                                <option value="1" {% if request.GET.selection_status == "1" %}selected{% endif %}>選考OK</option>
+                                <option value="2" {% if request.GET.selection_status == "2" %}selected{% endif %}>選考NG</option>
+                                <option value="3" {% if request.GET.selection_status == "3" %}selected{% endif %}>調整中</option>
+                                <option value="4" {% if request.GET.selection_status == "4" %}selected{% endif %}>日程確定</option>
+                                <option value="5" {% if request.GET.selection_status == "5" %}selected{% endif %}>内定通知</option>
+                                <option value="6" {% if request.GET.selection_status == "6" %}selected{% endif %}>内定承諾</option>
+                                <option value="7" {% if request.GET.selection_status == "7" %}selected{% endif %}>入社</option>
+                                <option value="8" {% if request.GET.selection_status == "8" %}selected{% endif %}>辞退</option>
+                            </select>
+                        </td>
+
+                        <th>募集職種</th>
+                        <td><input type="text" id="job_position" name="job_position" value="{{ request.GET.job_position }}"></td>
+                    </tr>
+                    <tr>
+                        <th>地域</th>
+                        <td><input type="text" id="region" name="region" value="{{ request.GET.region }}"></td>
+
+                        <td colspan="2">
+                            <button type="submit" class="button-link">検索</button>
+                            <button type="button" class="reset-button" onclick="window.location.href='{{ request.path }}';">リセット</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+            <!-- 上部に総応募数と有効応募数を表示 -->
+            <div class="stats">
+                <p>総応募数: {{ total_applicants }}</p>
+                <p>有効応募数: {{ valid_applicants }}</p>
+                <!-- 小数点第2位まで表示 -->
+                <p>有効応募率: {{ valid_applicant_rate|floatformat:2 }}%</p>
+                <p>1次面接実施率: {{ first_interview_rate|floatformat:2 }}%</p>
+                <p>2次面接実施率: {{ second_interview_rate|floatformat:2 }}%</p>
+                <p>内定通知率: {{ offer_rate|floatformat:2 }}%</p>
+                <p>内定承諾率: {{ offer_acceptance_rate|floatformat:2 }}%</p>
+            </div>
+            <!-- 採用費の総額と採用一人単価を表示 -->
+            <div class="stats">
+                <p>採用費総額: {{ total_cost|floatformat:2 }} 円</p>
+                <p>採用一人単価: {{ cost_per_hire|floatformat:2 }} 円</p>
+            </div>
+
+        <!-- ボタン風のリンク -->
+        <a href="{% url 'applicant_create' %}" class="button-link">新しい応募者を追加</a>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>氏名</th>
+                        <th>応募日</th>
+                        <th>応募経路</th>
+                        <th>選考<br/>フェーズ</th>
+                        <th>選考<br/>ステータス</th>
+                        <th>カジュアル<br/>面談実施日</th>
+                        <th>書類選考通過日</th>
+                        <th>1次面接実施日</th>
+                        <th>2次面接実施日</th>
+                        <th>内定通知日</th>                        
+                        <th>内定承諾日</th>                        
+                        <th>募集職種</th>
+                        <th>年齢</th>
+                        <th>地域</th>
+                        <th>スキル</th>
+                        <th>入社希望時期</th>
+                        <th>詳細</th>
+                        <th>編集</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for applicant in applicants %}
+                    <tr>
+                        <td>{{ applicant.id }}</td>
+                        <td>{{ applicant.name }}</td>
+                        <td>{{ applicant.application_date|date:"Y/m/d"  }}</td>
+                        <td>{{ applicant.application_route }}</td>
+                        <td>{{ applicant.get_selection_phase_display }}</td>
+                        <td>{{ applicant.get_selection_status_display }}</td>
+                        <td>{{ applicant.casual_meeting_date|date:"Y/m/d"  }}</td>
+                        <td>{{ applicant.document_selection_pass_date|date:"Y/m/d"  }}</td>
+                        <td>{{ applicant.first_interview_date|date:"Y/m/d"  }}</td>                        
+                        <td>{{ applicant.second_interview_date|date:"Y/m/d"  }}</td>                        
+                        <td>{{ applicant.offer_date|date:"Y/m/d"  }}</td>                        
+                        <td>{{ applicant.offer_acceptance_date|date:"Y/m/d"  }}</td>                        
+                        <td>{{ applicant.job_position }}</td>
+                        <td>{{ applicant.age }}</td>
+                        <td>{{ applicant.region }}</td>
+                        <td>{{ applicant.skills }}</td>
+                        <td>{{ applicant.desired_joining_date|date:"Y/m/d"  }}</td>
+                        <td><a href="{% url 'applicant_detail' applicant.pk %}" class="action-button">詳細</a></td>
+                        <td><a href="{% url 'applicant_edit' applicant.pk %}" class="action-button edit-button">編集</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
